@@ -1,0 +1,1 @@
+<img src="{{ asset('images/logo-verde-sinfondo.png') }}" alt="Logo" style="height: 50px;" class="me-2">

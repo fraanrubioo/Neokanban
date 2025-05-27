@@ -1,0 +1,132 @@
+/* Reset de márgenes y padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Fondo y tipografía general */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #d4f5d7 !important;  /* Asegúrate de que el fondo se aplique */
+    color: #1b1b1b !important;
+}
+
+/* Estilo para la Navbar */
+.navbar {
+    background-color: #0499af !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar.navbar-expand-lg {
+    background-color: #daf9ff !important;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+.navbar .btn-outline-primary {
+    border-color: #0097b2;
+    color: #0097b2;
+}
+
+.navbar .btn-outline-primary:hover {
+    background-color: #0097b2;
+    color: white;
+}
+
+.navbar .btn-primary {
+    background-color: #7ed957;
+    border-color: #7ed957;
+}
+
+.navbar .btn-primary:hover {
+    background-color: #6ec249;
+    border-color: #6ec249;
+}
+
+/* Hero Section */
+.hero-section {
+    min-height: 90vh;
+    display: flex;
+    align-items: center; /* Centrado vertical */
+    justify-content: space-between;
+}
+
+.hero-section .col-md-6 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.hero-section h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #000000 !important;
+    margin-bottom: 20px;
+}
+
+.hero-section p {
+    color: #2b2b2b !important;
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.hero-section .btn-success {
+    background-color: #7ed957;
+    border-color: #7ed957;
+    font-size: 1.2rem;
+}
+
+.hero-section .btn-success:hover {
+    background-color: #6ec249;
+    border-color: #6ec249;
+}
+
+/* Estilo para la imagen */
+.hero-image {
+    max-width: 90%;
+    height: auto;
+    margin-top: 20px;
+}
+
+/* Alinear la imagen a la derecha en pantallas grandes y medianas */
+@media (min-width: 768px) {
+    .hero-section {
+        flex-direction: row;
+    }
+
+    .hero-image {
+        margin-left: auto;
+        margin-right: 0;
+    }
+}
+
+/* Alinear la imagen al centro en pantallas pequeñas */
+@media (max-width: 767px) {
+    .hero-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-image {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-section h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero-section p {
+        font-size: 1rem;
+    }
+}
