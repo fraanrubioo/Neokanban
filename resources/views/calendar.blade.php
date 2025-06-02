@@ -14,39 +14,25 @@
     </div>
 
     @push('styles')
-        <!-- FullCalendar CSS -->
         <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
     @endpush
 
     @push('scripts')
-        <!-- FullCalendar JS + Plugins -->
         <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const calendarEl = document.getElementById('calendar');
 
                 const calendar = new FullCalendar.Calendar(calendarEl, {
-                    initialView: 'dayGridMonth', // Semana por defecto
+                    initialView: 'dayGridMonth',
                     locale: 'es',
                     height: 'auto',
                     headerToolbar: {
                         left: 'prev,next today',
                         center: 'title',
-                        right: 'dayGridMonth,dayGridWeek,dayGridDay' // vistas
+                        right: 'dayGridMonth,dayGridWeek,dayGridDay'
                     },
-                    events: [
-                        {
-                            title: 'Entrega Proyecto Laravel',
-                            start: '2025-05-15',
-                            end: '2025-05-15',
-                            color: '#0d6efd'
-                        },
-                        {
-                            title: 'Examen final',
-                            start: '2025-05-18',
-                            color: '#dc3545'
-                        }
-                    ]
+                    events: @json($tasks)
                 });
 
                 calendar.render();
