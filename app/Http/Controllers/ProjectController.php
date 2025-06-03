@@ -11,8 +11,18 @@ class ProjectController extends Controller
 {
     public function index()
     {
-        $projects = \App\Models\Project::where('owner_email', auth()->user()->email)->get();
-    
+        $userEmail = auth()->user()->email;
+
+        // Proyectos creados por el usuario
+        $ownProjects = \App\Models\Project::where('owner_email', $userEmail)->get();
+
+        // Proyectos en los que ha sido invitado
+        $invitedProjectIds = \App\Models\ProjectUserEmail::where('email', $userEmail)->pluck('project_id');
+        $invitedProjects = \App\Models\Project::whereIn('id', $invitedProjectIds)->get();
+
+        // Unimos los proyectos sin duplicados
+        $projects = $ownProjects->merge($invitedProjects);
+
         return view('dashboard', compact('projects'));
     }
 
@@ -48,6 +58,4 @@ class ProjectController extends Controller
         $project->delete();
         return redirect()->route('projects.index')->with('success', 'Proyecto eliminado correctamente.');
     }
-
-
 }

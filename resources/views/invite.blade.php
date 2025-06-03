@@ -21,6 +21,13 @@
         <form method="POST" action="{{ route('invite.send') }}">
             @csrf
 
+            <label for="project_id">Selecciona un proyecto</label>
+            <select name="project_id" id="project_id" required>
+                @foreach ($projects as $project)
+                    <option value="{{ $project->id }}">{{ $project->name }}</option>
+                @endforeach
+            </select>
+
             <label for="email">Correo electrónico del colaborador</label>
             <input id="email" name="email" type="email" required placeholder="ejemplo@correo.com">
 
