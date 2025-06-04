@@ -35,14 +35,7 @@ class Project extends Model
      */
     public function users()
     {
-        return $this->hasManyThrough(
-            User::class,
-            ProjectUserEmail::class,
-            'project_id',       // Foreign key on ProjectUserEmail
-            'email',            // Local key on User
-            'id',               // Local key on Project
-            'email'             // Foreign key on ProjectUserEmail
-        );
+        return $this->belongsToMany(User::class, 'project_user_emails', 'project_id', 'email', 'id', 'email');
     }
 
 

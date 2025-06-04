@@ -17,6 +17,11 @@
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('tasks.mine')" :active="request()->routeIs('user.tasks')">
+                        {{ __('Mis Tareas') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('calendar')" :active="request()->routeIs('calendar')">
                         {{ __('Calendario') }}
                     </x-nav-link>
@@ -90,15 +95,24 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-        </div>
+<div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+    <div class="pt-2 pb-3 space-y-1">
+        <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            {{ __('Proyectos') }}
+        </x-responsive-nav-link>
+        <x-responsive-nav-link :href="route('tasks.mine')" :active="request()->routeIs('user.tasks')">
+            {{ __('Mis Tareas') }}
+        </x-responsive-nav-link>
+        <x-responsive-nav-link :href="route('calendar')" :active="request()->routeIs('calendar')">
+            {{ __('Calendario') }}
+        </x-responsive-nav-link>
+        <x-responsive-nav-link :href="route('invite')" :active="request()->routeIs('invite')">
+            {{ __('Invitar') }}
+        </x-responsive-nav-link>
+    </div>
 
         <!-- Responsive Settings Options -->
-<div class="pt-4 pb-1 border-t border-gray-200">
+    <div class="pt-4 pb-1 border-t border-gray-200">
     <div class="px-4 flex items-center gap-3">
         @if (Auth::user()->profile_image)
             <img src="{{ asset('storage/' . Auth::user()->profile_image) }}"

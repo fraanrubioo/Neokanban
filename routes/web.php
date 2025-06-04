@@ -58,6 +58,10 @@ Route::middleware('auth')->group(function () {
     Route::get('projects/{project}/tasks/create', [TaskController::class, 'create'])->name('tasks.create');
     Route::post('projects/{project}/tasks', [TaskController::class, 'store'])->name('tasks.store');
     Route::delete('tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+    Route::get('/tasks/{task}/edit', [\App\Http\Controllers\TaskController::class, 'edit'])->name('tasks.edit');
+    Route::get('/mis-tareas', [TaskController::class, 'misTareas'])->name('tasks.mine')->middleware('auth');
+    Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
+
 
 });
 

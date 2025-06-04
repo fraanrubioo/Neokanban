@@ -29,7 +29,16 @@ class InviteController extends Controller
             'project_id' => 'required|exists:projects,id',
         ]);
 
-        // Guarda la relación email <-> proyecto
+        // Verificamos si ya está invitado
+        $yaInvitado = \App\Models\ProjectUserEmail::where('project_id', $request->project_id)
+            ->where('email', $request->email)
+            ->exists();
+
+        if ($yaInvitado) {
+            return redirect()->back()->withErrors(['email' => 'Ese usuario ya está invitado a este proyecto.'])->withInput();
+        }
+
+        // Si no está invitado, lo creamos
         ProjectUserEmail::create([
             'project_id' => $request->project_id,
             'email' => $request->email,
@@ -37,4 +46,5 @@ class InviteController extends Controller
 
         return redirect()->back()->with('success', 'Invitación enviada correctamente.');
     }
+
 }

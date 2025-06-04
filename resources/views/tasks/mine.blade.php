@@ -1,31 +1,29 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Proyecto: {{ $project->name }}
+            Mis Tareas
         </h2>
     </x-slot>
 
     <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-        @if (session('success'))
-            <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
-                {{ session('success') }}
-            </div>
-        @endif
+        <form method="GET" class="mb-6">
+            <label for="project_id" class="block mb-2 font-semibold">Selecciona un proyecto:</label>
+            <select name="project_id" id="project_id" class="form-select" onchange="this.form.submit()">
+                <option value="">-- Elegir proyecto --</option>
+                @foreach ($proyectos as $proyecto)
+                    <option value="{{ $proyecto->id }}" {{ $projectId == $proyecto->id ? 'selected' : '' }}>
+                        {{ $proyecto->name }}
+                    </option>
+                @endforeach
+            </select>
+        </form>
 
-        <div class="mb-4 text-end">
-            <a href="{{ route('tasks.create', $project) }}" class="bg-blue-600 text-black px-4 py-2 rounded hover:bg-blue-700">
-                + Nueva Tarea
-            </a>
-        </div>
-
-        <h3 class="text-lg font-semibold mb-4">Tareas asignadas</h3>
-
-        @if ($project->tasks->isEmpty())
-            <p class="text-muted">Este proyecto no tiene tareas todavía.</p>
+        @if ($tareas->isEmpty())
+            <p class="text-gray-600">No tienes tareas asignadas en este proyecto.</p>
         @else
             <div class="row g-4">
-                @foreach ($project->tasks as $task)
+                @foreach ($tareas as $task)
                     <div class="col-12 col-md-6 col-lg-4">
                         <div class="card h-100 shadow-sm">
                             <div class="card-body d-flex flex-column">
@@ -79,19 +77,9 @@
                                     </span>
                                 </p>
 
-                                @if (Auth::user()->email === $project->owner_email)
-                                    <form action="{{ route('tasks.destroy', $task) }}" method="POST" onsubmit="return confirm('¿Seguro que quieres eliminar esta tarea?');" class="mt-auto">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-outline-danger w-100 mb-2">
-                                            Eliminar Tarea
-                                        </button>
-                                    </form>
-
-                                    <a href="{{ route('tasks.edit', $task) }}" class="btn btn-outline-primary w-100">
-                                        Editar Tarea
-                                    </a>
-                                @endif
+                                <a href="{{ route('tasks.edit', $task) }}" class="btn btn-outline-primary w-100 mt-auto">
+                                    Editar Tarea
+                                </a>
                             </div>
                         </div>
                     </div>
