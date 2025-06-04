@@ -36,14 +36,7 @@ return new class extends Migration
             $table->integer('last_activity')->index();
         });
 
-        Schema::create('project_users', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('project_id')->constrained()->onDelete('cascade');
-            $table->string('email');
-            $table->timestamps();
-
-            $table->unique(['project_id', 'email']);
-        });
+        
     }
 
     /**
@@ -54,6 +47,6 @@ return new class extends Migration
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
-        Schema::dropIfExists('project_users');
+
     }
 };

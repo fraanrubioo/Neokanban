@@ -24,7 +24,7 @@
         @if ($project->tasks->isEmpty())
             <p class="text-gray-600">Este proyecto no tiene tareas todavía.</p>
         @else
-            <div class="space-y-4">
+            <div class="space-y-4 mb-8">
                 @foreach ($project->tasks as $task)
                     <div class="container mb-3">
                         <div class="row align-items-center bg-white shadow rounded p-4">
@@ -38,17 +38,46 @@
                                 <p class="text-sm text-secondary">
                                     Asignada a: {{ $task->user->name ?? 'Usuario no encontrado' }}
                                 </p>
+                                <p class="text-sm text-gray-600 mb-1"><strong>Descripción:</strong> {{ $task->short_description }}</p>
+
+                                <!-- Prioridad con color -->
+                                <p class="text-sm font-semibold mb-1">
+                                    Prioridad:
+                                    <span class="
+                                        px-2 py-1 rounded
+                                        @if($task->priority === 'urgente') bg-red-200 text-red-800
+                                        @elseif($task->priority === 'normal') bg-yellow-200 text-yellow-800
+                                        @else bg-green-200 text-green-800
+                                        @endif">
+                                        {{ ucfirst($task->priority) }}
+                                    </span>
+                                </p>
+
+                                <!-- Progreso con color -->
+                                <p class="text-sm font-semibold mb-1">
+                                    Progreso:
+                                    <span class="
+                                        px-2 py-1 rounded
+                                        @if($task->progress === 'finalizado') bg-green-200 text-green-800
+                                        @elseif($task->progress === 'en_curso') bg-blue-200 text-blue-800
+                                        @else bg-gray-200 text-gray-800
+                                        @endif">
+                                        {{ str_replace('_', ' ', ucfirst($task->progress)) }}
+                                    </span>
+                                </p>
                             </div>
 
-                           <!-- Columna derecha: botón eliminar -->
+                            <!-- Columna derecha: botón eliminar solo si eres el creador -->
                             <div class="col-md-3 text-end">
-                                <form action="{{ route('tasks.destroy', $task) }}" method="POST" onsubmit="return confirm('¿Seguro que quieres eliminar esta tarea?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-outline-danger">
-                                        Eliminar Tarea
-                                    </button>
-                                </form>
+                                @if (Auth::user()->email === $project->owner_email)
+                                    <form action="{{ route('tasks.destroy', $task) }}" method="POST" onsubmit="return confirm('¿Seguro que quieres eliminar esta tarea?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-outline-danger">
+                                            Eliminar Tarea
+                                        </button>
+                                    </form>
+                                @endif
                             </div>
                         </div>
                     </div>

@@ -13,7 +13,7 @@
             </div>
         @endif
 
-        <div class="mb-4 text-right">
+        <div class="mb-4 text-end">
             <a href="{{ route('projects.create') }}" class="bg-blue-600 text-black px-4 py-2 rounded hover:bg-blue-700">
                 + Nuevo Proyecto
             </a>
@@ -21,28 +21,28 @@
 
         @forelse ($projects as $project)
             <div class="container mb-4">
-    <div class="row align-items-center bg-white shadow-sm rounded p-4">
-        <!-- Columna izquierda: info del proyecto -->
-        <div class="col-md-9">
-            <h3 class="text-lg font-semibold">{{ $project->name }}</h3>
-            <p class="text-sm text-gray-500">Creado por: {{ $project->owner_email }}</p>
-            <a href="{{ route('projects.show', $project) }}" class="text-primary text-sm">Ver detalles</a>
-        </div>
+                <div class="row align-items-center bg-white shadow-sm rounded p-4">
+                    <!-- Columna izquierda: info del proyecto -->
+                    <div class="col-md-9">
+                        <h3 class="text-lg font-semibold">{{ $project->name }}</h3>
+                        <p class="text-sm text-gray-500">Creado por: {{ $project->owner_email }}</p>
+                        <a href="{{ route('projects.show', $project) }}" class="text-primary text-sm">Ver detalles</a>
+                    </div>
 
-        <!-- Columna derecha: botón eliminar -->
-        <div class="col-md-3 text-end">
-            <form action="{{ route('projects.destroy', $project) }}" method="POST" onsubmit="return confirm('¿Seguro que quieres eliminar este proyecto?');">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-outline-danger">
-                    Eliminar Proyecto
-                </button>
-            </form>
-        </div>
-    </div>
-</div>
-
-            
+                    <!-- Columna derecha: botón eliminar solo si eres el creador -->
+                    <div class="col-md-3 text-end">
+                        @if (Auth::user()->email === $project->owner_email)
+                            <form action="{{ route('projects.destroy', $project) }}" method="POST" onsubmit="return confirm('¿Seguro que quieres eliminar este proyecto?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-outline-danger">
+                                    Eliminar Proyecto
+                                </button>
+                            </form>
+                        @endif
+                    </div>
+                </div>
+            </div>
         @empty
             <p class="text-gray-600">Aún no tienes proyectos creados.</p>
         @endforelse

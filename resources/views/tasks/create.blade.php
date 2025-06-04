@@ -47,6 +47,32 @@
                     @enderror
                 </div>
 
+                <!-- Descripción breve -->
+                <div class="mb-4">
+                    <label for="short_description" class="form-label">Descripción breve</label>
+                    <input type="text" name="short_description" id="short_description" class="form-control" maxlength="100" placeholder="Máx. 100 caracteres">
+                </div>
+
+                <!-- Prioridad -->
+                <div class="mb-4">
+                    <label for="priority" class="form-label">Prioridad</label>
+                    <select name="priority" id="priority" class="form-select">
+                        <option value="baja">Baja</option>
+                        <option value="normal" selected>Normal</option>
+                        <option value="urgente">Urgente</option>
+                    </select>
+                </div>
+
+                <!-- Progreso -->
+                <div class="mb-4">
+                    <label for="progress" class="form-label">Progreso</label>
+                    <select name="progress" id="progress" class="form-select">
+                        <option value="sin_empezar" selected>Sin empezar</option>
+                        <option value="en_curso">En curso</option>
+                        <option value="finalizado">Finalizado</option>
+                    </select>
+                </div>
+
                 <div class="flex justify-end">
                     <button type="submit" class="btn btn-success">
                         Crear tarea

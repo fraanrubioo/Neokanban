@@ -7,6 +7,7 @@ use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class MessageController extends Controller
 {
@@ -40,9 +41,8 @@ class MessageController extends Controller
         // Obtener los usuarios invitados
         $users = $project->users()->get();
 
-        // Crear una colección y añadir al owner manualmente si existe en la tabla de usuarios
-        $owner = \App\Models\User::where('email', $project->owner_email)->first();
-
+        // Añadir manualmente al owner si existe como usuario
+        $owner = User::where('email', $project->owner_email)->first();
         if ($owner && !$users->contains('id', $owner->id)) {
             $users->push($owner);
         }
@@ -52,20 +52,27 @@ class MessageController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'project_id' => 'required|exists:projects,id',
             'recipient_id' => 'required|exists:users,id',
             'subject' => 'required|string|max:255',
             'body' => 'required|string',
+            'attachment' => 'nullable|file|max:5120', // hasta 5 MB
         ]);
 
-        Message::create([
-            'project_id' => $request->project_id,
-            'sender_id' => Auth::id(),
-            'recipient_id' => $request->recipient_id,
-            'subject' => $request->subject,
-            'body' => $request->body,
-        ]);
+        $message = new Message();
+        $message->project_id = $validated['project_id'];
+        $message->sender_id = Auth::id();
+        $message->recipient_id = $validated['recipient_id'];
+        $message->subject = $validated['subject'];
+        $message->body = $validated['body'];
+
+        if ($request->hasFile('attachment')) {
+            $path = $request->file('attachment')->store('attachments', 'public');
+            $message->attachment = $path;
+        }
+
+        $message->save();
 
         return redirect()->route('messages.sent')->with('success', 'Mensaje enviado correctamente.');
     }
@@ -78,4 +85,16 @@ class MessageController extends Controller
 
         return view('messages.show', compact('message'));
     }
+
+    public function destroy(Message $message)
+    {
+        if (Auth::id() !== $message->recipient_id && Auth::id() !== $message->sender_id) {
+            abort(403);
+        }
+
+        $message->delete();
+
+        return redirect()->back()->with('success', 'Mensaje eliminado correctamente.');
+    }
+
 }

@@ -27,9 +27,10 @@
                 <div class="col-md-9 col-lg-8">
                     <div class="card shadow-sm">
                         <div class="card-body">
-                            <form method="POST" action="{{ route('messages.store') }}">
+                            <form method="POST" action="{{ route('messages.store') }}" enctype="multipart/form-data">
                                 @csrf
 
+                                <!-- Proyecto -->
                                 <div class="mb-4">
                                     <label for="project_id" class="form-label">Proyecto</label>
                                     <select id="project_id" name="project_id" class="form-select" required>
@@ -40,6 +41,7 @@
                                     </select>
                                 </div>
 
+                                <!-- Destinatario -->
                                 <div class="mb-4">
                                     <label for="recipient_id" class="form-label">Destinatario</label>
                                     <select id="recipient_id" name="recipient_id" class="form-select" required>
@@ -47,16 +49,25 @@
                                     </select>
                                 </div>
 
+                                <!-- Asunto -->
                                 <div class="mb-4">
                                     <label for="subject" class="form-label">Asunto</label>
                                     <input type="text" id="subject" name="subject" class="form-control" required>
                                 </div>
 
+                                <!-- Mensaje -->
                                 <div class="mb-4">
                                     <label for="body" class="form-label">Mensaje</label>
                                     <textarea id="body" name="body" rows="5" class="form-control" required></textarea>
                                 </div>
 
+                                <!-- Archivo adjunto -->
+                                <div class="mb-4">
+                                    <label for="attachment" class="form-label">Archivo adjunto</label>
+                                    <input type="file" name="attachment" id="attachment" class="form-control">
+                                </div>
+
+                                <!-- Botón -->
                                 <div class="text-end">
                                     <button type="submit" class="btn btn-success">
                                         Enviar mensaje

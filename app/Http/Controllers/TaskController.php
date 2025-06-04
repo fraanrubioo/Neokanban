@@ -17,23 +17,23 @@ class TaskController extends Controller
 
     public function store(Request $request, Project $project)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'user_id' => 'required|exists:users,id',
+            'short_description' => 'nullable|string|max:100',
+            'priority' => 'required|in:baja,normal,urgente',
+            'progress' => 'required|in:sin_empezar,en_curso,finalizado',
         ]);
 
-        Task::create([
-            'name' => $request->name,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'user_id' => $request->user_id,
-            'project_id' => $project->id,
-        ]);
+        $validated['project_id'] = $project->id;
+
+        Task::create($validated);
 
         return redirect()->route('projects.show', $project)->with('success', 'Tarea creada correctamente.');
     }
+
 
     public function destroy(Task $task)
     {

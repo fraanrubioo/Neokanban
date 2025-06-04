@@ -35,7 +35,26 @@
 
                             <p class="whitespace-pre-line">{{ $message->body }}</p>
 
-                            <br/>
+                            @if ($message->attachment)
+                                <hr class="my-4">
+                                <p class="fw-bold mb-2">Archivo adjunto:</p>
+                                
+                                @php
+                                    $extension = pathinfo($message->attachment, PATHINFO_EXTENSION);
+                                @endphp
+
+                                @if (in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'gif', 'webp']))
+                                    <img src="{{ asset('storage/' . $message->attachment) }}" alt="Imagen adjunta" class="img-fluid rounded shadow-sm">
+                                @elseif (strtolower($extension) === 'pdf')
+                                    <embed src="{{ asset('storage/' . $message->attachment) }}" type="application/pdf" width="100%" height="500px" />
+                                @else
+                                    <a href="{{ asset('storage/' . $message->attachment) }}" class="btn btn-outline-primary" download>
+                                        Descargar archivo
+                                    </a>
+                                @endif
+                            @endif
+
+                            <br><br>
                             <a href="{{ url()->previous() }}" class="btn btn-secondary">← Volver</a>
                         </div>
                     </div>

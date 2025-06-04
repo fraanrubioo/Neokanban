@@ -35,19 +35,34 @@
                                 <table class="table table-hover mt-3">
                                     <thead>
                                         <tr>
-                                            <th scope="col">De</th>
-                                            <th scope="col">Asunto</th>
-                                            <th scope="col">Fecha</th>
-                                            <th></th>
+                                            <th>De</th>
+                                            <th>Asunto</th>
+                                            <th>Fecha</th>
+                                            <th class="text-end">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($messages as $message)
-                                            <tr onclick="window.location='{{ route('messages.show', $message) }}'" style="cursor:pointer;">
-                                                <td>{{ $message->sender->name ?? 'Desconocido' }}</td>
-                                                <td>{{ $message->subject }}</td>
-                                                <td>{{ $message->created_at->format('d/m/Y H:i') }}</td>
-                                                <td><i class="bi bi-chevron-right"></i></td>
+                                            <tr>
+                                                <td onclick="window.location='{{ route('messages.show', $message) }}'" style="cursor:pointer;">
+                                                    {{ $message->sender->name ?? 'Desconocido' }}
+                                                </td>
+                                                <td onclick="window.location='{{ route('messages.show', $message) }}'" style="cursor:pointer;">
+                                                    {{ $message->subject }}
+                                                </td>
+                                                <td onclick="window.location='{{ route('messages.show', $message) }}'" style="cursor:pointer;">
+                                                    {{ $message->created_at->format('d/m/Y H:i') }}
+                                                </td>
+                                                <td class="text-end">
+                                                    <form action="{{ route('messages.destroy', $message->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este mensaje?');" style="display: inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="text-red-600 hover:text-red-800 font-bold text-sm bg-transparent border-none p-0 m-0" title="Eliminar mensaje">
+                                                            ✕
+                                                        </button>
+                                                    </form>
+                                                </td>
+
                                             </tr>
                                         @endforeach
                                     </tbody>
