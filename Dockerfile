@@ -30,19 +30,23 @@ WORKDIR /var/www/html
 # Copiar archivos de la aplicación
 COPY . .
 
-# Instalar dependencias PHP (incluyendo dev, como Breeze o Pint)
+# Asegurarse de que exista el archivo .env
+RUN [ -f .env ] || cp .env.example .env
+
+# Instalar dependencias PHP
 RUN composer install
 
-# Instalar dependencias de npm solo de producción (quita --omit=dev si estás en desarrollo)
+# Instalar dependencias de npm
 RUN npm install --omit=dev
 
-# Generar clave de app y migraciones necesarias (como sessions)
+# Ejecutar comandos de Laravel
 RUN php artisan key:generate \
     && php artisan config:cache \
     && php artisan route:cache \
     && php artisan view:cache \
     && php artisan migrate --force \
     && php artisan storage:link
+
 
 # Configurar permisos
 RUN mkdir -p storage/framework/{sessions,views,cache} \
