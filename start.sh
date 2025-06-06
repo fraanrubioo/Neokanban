@@ -14,7 +14,7 @@ php artisan config:clear
 php artisan cache:clear
 
 # Migrar todas las tablas y sembrar datos
-php artisan migrate --seed --force
+php artisan migrate:fresh --seed --force
 
 # Iniciar supervisord (Nginx + PHP-FPM)
 exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
