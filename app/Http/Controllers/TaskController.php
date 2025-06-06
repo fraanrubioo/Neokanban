@@ -12,7 +12,16 @@ class TaskController extends Controller
 {
     public function create(Project $project)
     {
-        $users = User::all(); // o los relacionados al proyecto
+        $emails = $project->users()->pluck('project_user_emails.email')->toArray();
+
+        // Añade el email del creador si no está ya incluido
+        if (!in_array($project->owner_email, $emails)) {
+            $emails[] = $project->owner_email;
+        }
+
+$users = User::whereIn('email', $emails)->get();
+
+
         return view('tasks.create', compact('project', 'users'));
     }
 
